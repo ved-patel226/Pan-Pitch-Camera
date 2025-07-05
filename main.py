@@ -14,29 +14,19 @@ class Servo(Enum):
     PITCH = "pitch"
 
 
-PAN_ERROR = 0.07
-PITCH_ERROR = -0.08
-
-
 def move_servo(servo_type: Servo, amount: int):
     if servo_type == Servo.PAN:
-        amount = max(-1, min(1, amount + PAN_ERROR))  # Clamp between -1 and 1
+        # amount = max(-1, min(1, amount + PAN_ERROR))  # Clamp between -1 and 1
         kit.continuous_servo[0].throttle = amount
     elif servo_type == Servo.PITCH:
-        amount = max(-1, min(1, amount + PITCH_ERROR))  # Clamp between -1 and 1
-        kit.continuous_servo[1].throttle = amount
+        # amount = max(-1, min(1, amount + PITCH_ERROR))  # Clamp between -1 and 1
+        kit.continuous_servo[2].throttle = amount
     else:
         raise NotImplementedError("only pan and pitch rn")
 
 
-move_servo(Servo.PAN, 1)
-move_servo(Servo.PITCH, 1)
+move_servo(Servo.PITCH, -0.3)
 
-time.sleep(1)
-move_servo(Servo.PAN, -1)
-move_servo(Servo.PITCH, -1)
+time.sleep(0.15)
 
-time.sleep(1)
-
-move_servo(Servo.PAN, 0)
 move_servo(Servo.PITCH, 0)
