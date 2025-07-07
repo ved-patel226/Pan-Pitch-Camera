@@ -1,6 +1,8 @@
 import os
 import torch
 from ultralytics import YOLO
+import platform
+import time
 
 
 def train_yolo():
@@ -14,17 +16,30 @@ def train_yolo():
 
     model.train(
         data=data_yaml,
-        epochs=100,
+        epochs=9999999,  # stop when patience runs out (get the best model)
         imgsz=640,
-        batch=16,
-        patience=20,
+        batch=8,
+        patience=5,
         save=True,
         single_cls=True,
+        name="v3",
     )
 
     model.val()
 
     print("Training Completed.")
+
+    # Shutdown the computer after completion
+    print("Shutting down the computer in 1 minute...")
+    system = platform.system().lower()
+    if system == "linux":
+        os.system("shutdown -h 1")
+    elif system == "windows":
+        os.system("shutdown /s /t 60")
+    elif system == "darwin":  # macOS
+        os.system("sudo shutdown -h +1")
+
+    time.sleep(65)
 
 
 if __name__ == "__main__":
